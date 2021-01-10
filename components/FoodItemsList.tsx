@@ -3,24 +3,24 @@ import { View, FlatList, Text, Image, StyleSheet } from 'react-native';
 import FoodItemView from './FoodItemView';
 import { FoodItem } from '../interfaces';
 
-const foodItems: FoodItem[] = [
-  {
-    name: 'Chipotle Sauce',
-    brandName: 'Bitchin',
-    imageUrl:
-      'https://nutritionix-api.s3.amazonaws.com/53e228999f8b88696d1be599.jpeg',
-    rating: 3.0,
-    numReviews: 2,
-  },
-];
+interface FoodItemsListProps {
+  items: FoodItem[];
+}
 
-export default class FoodItemsList extends Component {
+export default class FoodItemsList extends Component<FoodItemsListProps> {
+  constructor(props: FoodItemsListProps) {
+    super(props);
+  }
+
   render() {
+    const { items } = this.props;
+
     return (
       <View style={styles.container}>
         <FlatList
-          data={foodItems}
+          data={items}
           renderItem={({ item }) => <FoodItemView item={item}></FoodItemView>}
+          keyExtractor={(item, index) => index.toString()}
         />
       </View>
     );

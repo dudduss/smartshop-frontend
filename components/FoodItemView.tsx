@@ -3,8 +3,12 @@ import { StyleSheet, Text, Image, View } from 'react-native';
 import { FoodItem } from '../interfaces';
 import StarRating from 'react-native-star-rating';
 
-export default class FoodItemView extends Component<FoodItemProps> {
-  constructor(props: FoodItemProps) {
+interface FoodItemViewProps {
+  item: FoodItem;
+}
+
+export default class FoodItemView extends Component<FoodItemViewProps> {
+  constructor(props: FoodItemViewProps) {
     super(props);
   }
 
@@ -12,10 +16,10 @@ export default class FoodItemView extends Component<FoodItemProps> {
     const { item } = this.props;
     return (
       <View style={styles.container}>
-        <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
+        <Image source={{ uri: item.image_url }} style={styles.foodImage} />
         <View style={styles.infoContainer}>
-          <Text style={styles.foodNameText}>{item.name}</Text>
-          <Text style={styles.brandNameText}>by {item.brandName}</Text>
+          <Text style={styles.foodNameText}>{item.food_name}</Text>
+          <Text style={styles.brandNameText}>by {item.brand_name}</Text>
           <View style={styles.ratingContainer}>
             <StarRating
               disabled={true}
@@ -26,17 +30,14 @@ export default class FoodItemView extends Component<FoodItemProps> {
               starSize={30}
             ></StarRating>
             <Text style={styles.numReviewsText}>
-              ({item.numReviews} reviews)
+              ({item.num_reviews} {item.num_reviews == 1 ? 'review' : 'reviews'}
+              )
             </Text>
           </View>
         </View>
       </View>
     );
   }
-}
-
-interface FoodItemProps {
-  item: FoodItem;
 }
 
 const styles = StyleSheet.create({

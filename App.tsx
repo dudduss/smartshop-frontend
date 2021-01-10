@@ -12,6 +12,8 @@ const Tabs = createBottomTabNavigator();
 const HomeStack = createStackNavigator();
 const ProfileStack = createStackNavigator();
 
+// console.disableYellowBox = true;
+
 class HomeStackScreen extends Component {
   render() {
     return (
