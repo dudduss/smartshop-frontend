@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { View, FlatList, Text, Image, StyleSheet } from 'react-native';
-import { FoodItemView } from './FoodItemView';
+import FoodItemView from './FoodItemView';
 import { FoodItem } from '../interfaces';
 
 const foodItems: FoodItem[] = [
@@ -14,15 +14,17 @@ const foodItems: FoodItem[] = [
   },
 ];
 
-export function FoodItemList() {
-  return (
-    <View style={styles.container}>
-      <FlatList
-        data={foodItems}
-        renderItem={({ item }) => <FoodItemView item={item}></FoodItemView>}
-      />
-    </View>
-  );
+export default class FoodItemsList extends Component {
+  render() {
+    return (
+      <View style={styles.container}>
+        <FlatList
+          data={foodItems}
+          renderItem={({ item }) => <FoodItemView item={item}></FoodItemView>}
+        />
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({

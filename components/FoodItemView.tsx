@@ -1,30 +1,38 @@
-import React, { FC } from 'react';
+import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 import { FoodItem } from '../interfaces';
 import StarRating from 'react-native-star-rating';
 
-export function FoodItemView(props: FoodItemProps) {
-  const { item } = props;
-  return (
-    <View style={{ flexDirection: 'row' }}>
-      <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
-      <View style={styles.infoContainer}>
-        <Text style={styles.foodNameText}>{item.name}</Text>
-        <Text style={styles.brandNameText}>by {item.brandName}</Text>
-        <View style={styles.ratingContainer}>
-          <StarRating
-            disabled={true}
-            maxStars={5}
-            rating={item.rating}
-            fullStarColor={'#2AD478'}
-            emptyStarColor={'#2AD478'}
-            starSize={30}
-          ></StarRating>
-          <Text style={styles.numReviewsText}>({item.numReviews} reviews)</Text>
+export default class FoodItemView extends Component<FoodItemProps> {
+  constructor(props: FoodItemProps) {
+    super(props);
+  }
+
+  render() {
+    const { item } = this.props;
+    return (
+      <View style={styles.container}>
+        <Image source={{ uri: item.imageUrl }} style={styles.foodImage} />
+        <View style={styles.infoContainer}>
+          <Text style={styles.foodNameText}>{item.name}</Text>
+          <Text style={styles.brandNameText}>by {item.brandName}</Text>
+          <View style={styles.ratingContainer}>
+            <StarRating
+              disabled={true}
+              maxStars={5}
+              rating={item.rating}
+              fullStarColor={'#2AD478'}
+              emptyStarColor={'#2AD478'}
+              starSize={30}
+            ></StarRating>
+            <Text style={styles.numReviewsText}>
+              ({item.numReviews} reviews)
+            </Text>
+          </View>
         </View>
       </View>
-    </View>
-  );
+    );
+  }
 }
 
 interface FoodItemProps {
@@ -50,6 +58,9 @@ const styles = StyleSheet.create({
   },
   starRatingItem: {
     height: 30,
+  },
+  container: {
+    flexDirection: 'row',
   },
   infoContainer: {
     marginTop: 10,

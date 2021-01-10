@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { ScreenContainer } from 'react-native-screens';
 import { StyleSheet, Text, View } from 'react-native';
-import { FoodItemList } from '../components/FoodItemList';
+import FoodItemsList from '../components/FoodItemsList';
 
 export default class HomeScreen extends Component {
   render() {
@@ -9,7 +9,7 @@ export default class HomeScreen extends Component {
       <ScreenContainer>
         <Text style={styles.savedItemsHeader}> Your Saved Items </Text>
         <View>
-          <FoodItemList></FoodItemList>
+          <FoodItemsList></FoodItemsList>
         </View>
       </ScreenContainer>
     );
