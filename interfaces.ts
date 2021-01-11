@@ -1,4 +1,4 @@
-export interface FoodItem {
+export interface MarkedFoodItem {
   id: number;
   user_id: number;
   item_id: number;

@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { ScreenContainer } from 'react-native-screens';
+import { SearchBar } from 'react-native-elements';
 import { StyleSheet, Text, View } from 'react-native';
 import FoodItemsList from '../components/FoodItemsList';
-import { FoodItem } from '../interfaces';
+import { MarkedFoodItem } from '../interfaces';
 import axios from 'axios';
 
-const defaultMarkedItems: FoodItem[] = [];
-
 interface HomeScreenState {
-  markedItems: FoodItem[];
+  markedItems: MarkedFoodItem[];
+  searchString: string;
   isLoading: boolean;
 }
 
@@ -17,10 +17,15 @@ export default class HomeScreen extends Component<{}, HomeScreenState> {
     super(props);
 
     this.state = {
+      searchString: '',
       markedItems: [],
       isLoading: false,
     };
   }
+
+  updateSearch = (searchString: string) => {
+    this.setState({ searchString });
+  };
 
   componentDidMount() {
     this.setState({ isLoading: true });
@@ -29,7 +34,7 @@ export default class HomeScreen extends Component<{}, HomeScreenState> {
       .get('http://192.168.0.32:3000/markedItemsByUserId?userId=1')
       .then((response) => {
         this.setState({
-          markedItems: (response.data as unknown) as FoodItem[],
+          markedItems: (response.data as unknown) as MarkedFoodItem[],
           isLoading: false,
         });
       })
@@ -37,9 +42,17 @@ export default class HomeScreen extends Component<{}, HomeScreenState> {
   }
 
   render() {
-    const { markedItems } = this.state;
+    const { markedItems, searchString } = this.state;
     return (
       <ScreenContainer>
+        <SearchBar
+          placeholder='Search Foods...'
+          onChangeText={this.updateSearch}
+          onSubmitEditing={() => console.log('searchString: ', searchString)}
+          value={searchString}
+          lightTheme={true}
+        />
+
         <Text style={styles.savedItemsHeader}> Your Saved Items </Text>
         <View>
           <FoodItemsList items={markedItems}></FoodItemsList>
