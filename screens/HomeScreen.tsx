@@ -5,15 +5,29 @@ import { StyleSheet, Text, View } from 'react-native';
 import FoodItemsList from '../components/FoodItemsList';
 import { MarkedFoodItem } from '../interfaces';
 import axios from 'axios';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamsList } from '../types';
 
-interface HomeScreenState {
+type HomeScreenState = {
   markedItems: MarkedFoodItem[];
   searchString: string;
   isLoading: boolean;
-}
+};
 
-export default class HomeScreen extends Component<{}, HomeScreenState> {
-  constructor(props: {} | Readonly<{}>) {
+type HomeScreenProps = {
+  navigation: SearchResultsScreenNavigationProp;
+};
+
+type SearchResultsScreenNavigationProp = StackNavigationProp<
+  HomeStackParamsList,
+  'SearchResults'
+>;
+
+export default class HomeScreen extends Component<
+  HomeScreenProps,
+  HomeScreenState
+> {
+  constructor(props: HomeScreenProps) {
     super(props);
 
     this.state = {
@@ -31,7 +45,7 @@ export default class HomeScreen extends Component<{}, HomeScreenState> {
     this.setState({ isLoading: true });
 
     axios
-      .get('http://192.168.0.32:3000/markedItemsByUserId?userId=1')
+      .get('http://192.168.1.146:3000/markedItemsByUserId?userId=1')
       .then((response) => {
         this.setState({
           markedItems: (response.data as unknown) as MarkedFoodItem[],
@@ -42,13 +56,16 @@ export default class HomeScreen extends Component<{}, HomeScreenState> {
   }
 
   render() {
+    const { navigation } = this.props;
     const { markedItems, searchString } = this.state;
     return (
       <ScreenContainer>
         <SearchBar
           placeholder='Search Foods...'
           onChangeText={this.updateSearch}
-          onSubmitEditing={() => console.log('searchString: ', searchString)}
+          onSubmitEditing={() =>
+            navigation.push('SearchResults', { searchString })
+          }
           value={searchString}
           lightTheme={true}
         />

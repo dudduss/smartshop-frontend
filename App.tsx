@@ -4,20 +4,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import SearchResultsScreen from './screens/SearchResultsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { HomeStackParamsList } from './types';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
-const HomeStack = createStackNavigator();
+const HomeStack = createStackNavigator<HomeStackParamsList>();
 const ProfileStack = createStackNavigator();
-
-// console.disableYellowBox = true;
 
 class HomeStackScreen extends Component {
   render() {
     return (
       <HomeStack.Navigator
+        initialRouteName='Home'
         screenOptions={{
           headerStyle: {
             backgroundColor: '#2AD478',
@@ -29,6 +30,10 @@ class HomeStackScreen extends Component {
         }}
       >
         <HomeStack.Screen name='Home' component={HomeScreen}></HomeStack.Screen>
+        <HomeStack.Screen
+          name='SearchResults'
+          component={SearchResultsScreen}
+        ></HomeStack.Screen>
       </HomeStack.Navigator>
     );
   }
