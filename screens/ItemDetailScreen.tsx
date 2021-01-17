@@ -40,22 +40,22 @@ export default class ItemDetailScreen extends Component<
 
   componentDidMount() {
     const { route } = this.props;
-    this.setState({ isLoading: true });
-    const url =
-      'http://' +
-      getIpAddress() +
-      ':3000/items/search/detail?nix_item_id=' +
-      route.params.item.nix_item_id;
+    // this.setState({ isLoading: true });
+    // const url =
+    //   'http://' +
+    //   getIpAddress() +
+    //   ':3000/items/search/detail?nix_item_id=' +
+    //   route.params.item.nix_item_id;
 
-    axios
-      .get(url)
-      .then((response) => {
-        this.setState({
-          itemDetail: (response.data as unknown) as FoodItemDetail,
-          isLoading: false,
-        });
-      })
-      .catch((error) => console.log(error));
+    // axios
+    //   .get(url)
+    //   .then((response) => {
+    //     this.setState({
+    //       itemDetail: (response.data as unknown) as FoodItemDetail,
+    //       isLoading: false,
+    //     });
+    //   })
+    //   .catch((error) => console.log(error));
 
     // We also want to make requests to our "health endpoint" when that is ready + get reviews endpoint
   }
@@ -86,6 +86,18 @@ export default class ItemDetailScreen extends Component<
               </Text>
             </View>
           </View>
+          <View style={styles.sectionSeparator} />
+          <Collapse style={styles.nutritionContainer}>
+            <CollapseHeader>
+              <View>
+                <Text style={styles.sectionHeader}>Nutrition</Text>
+              </View>
+            </CollapseHeader>
+            <CollapseBody>
+              <Text>Ta daa!</Text>
+            </CollapseBody>
+          </Collapse>
+          <View style={styles.sectionSeparator} />
         </View>
       </ScreenContainer>
     );
@@ -94,7 +106,6 @@ export default class ItemDetailScreen extends Component<
 
 const styles = StyleSheet.create({
   foodImage: {
-    textAlign: 'center',
     marginTop: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
@@ -121,5 +132,17 @@ const styles = StyleSheet.create({
   numReviewsText: {
     marginLeft: 5,
     marginTop: 5,
+  },
+  sectionSeparator: {
+    marginTop: 20,
+    marginBottom: 20,
+    borderBottomColor: '#E5E5E5',
+    borderBottomWidth: 5,
+  },
+  sectionHeader: {
+    fontSize: 18,
+  },
+  nutritionContainer: {
+    marginLeft: 20,
   },
 });
