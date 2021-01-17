@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
-import { MarkedFoodItem } from '../interfaces';
+import { FoodItem, MarkedFoodItem } from '../interfaces';
 import StarRating from 'react-native-star-rating';
 
 interface FoodItemViewProps {
-  item: MarkedFoodItem;
+  item: MarkedFoodItem | FoodItem;
 }
 
 export default class FoodItemView extends Component<FoodItemViewProps> {

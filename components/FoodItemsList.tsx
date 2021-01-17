@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { View, FlatList, Text, Image, StyleSheet } from 'react-native';
 import FoodItemView from './FoodItemView';
-import { MarkedFoodItem } from '../interfaces';
+import { FoodItem, MarkedFoodItem } from '../interfaces';
 
-interface FoodItemsListProps {
-  items: MarkedFoodItem[];
-}
+type FoodItemsListProps = {
+  items: MarkedFoodItem[] | FoodItem[];
+};
 
 export default class FoodItemsList extends Component<FoodItemsListProps> {
   constructor(props: FoodItemsListProps) {
