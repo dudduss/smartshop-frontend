@@ -7,6 +7,7 @@ import { MarkedFoodItem } from '../interfaces';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { HomeStackParamsList } from '../types';
+import { getIpAddress } from '../utils';
 
 type HomeScreenState = {
   markedItems: MarkedFoodItem[];
@@ -43,9 +44,11 @@ export default class HomeScreen extends Component<
 
   componentDidMount() {
     this.setState({ isLoading: true });
+    const route =
+      'http://' + getIpAddress() + ':3000/markedItemsByUserId?userId=1';
 
     axios
-      .get('http://192.168.1.146:3000/markedItemsByUserId?userId=1')
+      .get(route)
       .then((response) => {
         this.setState({
           markedItems: (response.data as unknown) as MarkedFoodItem[],
