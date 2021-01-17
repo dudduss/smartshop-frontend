@@ -6,8 +6,13 @@ import { HomeStackParamsList } from '../types';
 import { FoodItemDetail } from '../types';
 import { getIpAddress } from '../utils';
 import axios from 'axios';
-import FoodItemsList from '../components/FoodItemsList';
 import StarRating from 'react-native-star-rating';
+import {
+  Collapse,
+  CollapseHeader,
+  CollapseBody,
+  AccordionList,
+} from 'accordion-collapse-react-native';
 
 type ItemDetailScreenRouteProp = RouteProp<HomeStackParamsList, 'ItemDetail'>;
 
