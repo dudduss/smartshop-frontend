@@ -3,10 +3,14 @@ import { ScreenContainer } from 'react-native-screens';
 import { SearchBar } from 'react-native-elements';
 import { StyleSheet, Text, View } from 'react-native';
 import FoodItemsList from '../components/FoodItemsList';
-import { MarkedFoodItem } from '../interfaces';
+import { MarkedFoodItem } from '../types';
 import axios from 'axios';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { HomeStackParamsList } from '../types';
+import {
+  HomeStackParamsList,
+  SearchResultsNavigationProp,
+  ItemDetailNavigationProp,
+} from '../types';
 import { getIpAddress } from '../utils';
 
 type HomeScreenState = {
@@ -16,13 +20,8 @@ type HomeScreenState = {
 };
 
 type HomeScreenProps = {
-  navigation: SearchResultsScreenNavigationProp;
+  navigation: SearchResultsNavigationProp | ItemDetailNavigationProp;
 };
-
-type SearchResultsScreenNavigationProp = StackNavigationProp<
-  HomeStackParamsList,
-  'SearchResults'
->;
 
 export default class HomeScreen extends Component<
   HomeScreenProps,
@@ -74,8 +73,12 @@ export default class HomeScreen extends Component<
         />
 
         <Text style={styles.savedItemsHeader}> Your Saved Items </Text>
+
         <View>
-          <FoodItemsList items={markedItems}></FoodItemsList>
+          <FoodItemsList
+            items={markedItems}
+            navigation={navigation as ItemDetailNavigationProp}
+          ></FoodItemsList>
         </View>
       </ScreenContainer>
     );

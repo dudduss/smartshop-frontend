@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
-import { FoodItem, MarkedFoodItem } from '../interfaces';
+import { FoodItem, MarkedFoodItem } from '../types';
 import StarRating from 'react-native-star-rating';
 
 interface FoodItemViewProps {

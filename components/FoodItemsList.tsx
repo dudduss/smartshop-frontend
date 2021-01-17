@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import { View, FlatList, Text, Image, StyleSheet } from 'react-native';
+import {
+  View,
+  FlatList,
+  Text,
+  Image,
+  StyleSheet,
+  TouchableHighlight,
+} from 'react-native';
 import FoodItemView from './FoodItemView';
-import { FoodItem, MarkedFoodItem } from '../interfaces';
+import { FoodItem, MarkedFoodItem, ItemDetailNavigationProp } from '../types';
 
 type FoodItemsListProps = {
   items: MarkedFoodItem[] | FoodItem[];
+  navigation: ItemDetailNavigationProp;
 };
 
 export default class FoodItemsList extends Component<FoodItemsListProps> {
@@ -13,14 +21,21 @@ export default class FoodItemsList extends Component<FoodItemsListProps> {
   }
 
   render() {
-    const { items } = this.props;
+    const { items, navigation } = this.props;
 
     return (
       <View style={styles.container}>
         <FlatList
           data={items}
-          renderItem={({ item }) => <FoodItemView item={item}></FoodItemView>}
+          renderItem={({ item }) => (
+            <TouchableHighlight
+              onPress={() => navigation.push('ItemDetail', { item })}
+            >
+              <FoodItemView item={item}></FoodItemView>
+            </TouchableHighlight>
+          )}
           keyExtractor={(item, index) => index.toString()}
+          style={styles.list}
         />
       </View>
     );
@@ -31,5 +46,8 @@ const styles = StyleSheet.create({
   container: {
     width: '100%',
     height: '100%',
+  },
+  list: {
+    marginBottom: 10,
   },
 });

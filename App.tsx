@@ -7,6 +7,7 @@ import ProfileScreen from './screens/ProfileScreen';
 import SearchResultsScreen from './screens/SearchResultsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HomeStackParamsList } from './types';
+import ItemDetailScreen from './screens/ItemDetailScreen';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -27,12 +28,23 @@ class HomeStackScreen extends Component {
           headerTitleStyle: {
             fontWeight: 'bold',
           },
+          headerBackTitle: ' ',
         }}
       >
         <HomeStack.Screen name='Home' component={HomeScreen}></HomeStack.Screen>
         <HomeStack.Screen
           name='SearchResults'
           component={SearchResultsScreen}
+          options={({ route }) => ({
+            title: "Results for '" + route.params.searchString + "'",
+          })}
+        ></HomeStack.Screen>
+        <HomeStack.Screen
+          name='ItemDetail'
+          component={ItemDetailScreen}
+          options={({ route }) => ({
+            title: route.params.item.food_name,
+          })}
         ></HomeStack.Screen>
       </HomeStack.Navigator>
     );

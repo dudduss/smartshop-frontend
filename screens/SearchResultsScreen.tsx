@@ -2,11 +2,15 @@ import React, { Component } from 'react';
 import { ScreenContainer } from 'react-native-screens';
 import { Text, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { HomeStackParamsList } from '../types';
-import { FoodItem } from '../interfaces';
+import {
+  HomeStackParamsList,
+  ItemDetailNavigationProp,
+  FoodItem,
+} from '../types';
 import { getIpAddress } from '../utils';
 import axios from 'axios';
 import FoodItemsList from '../components/FoodItemsList';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 type SearchResultsScreenRouteProp = RouteProp<
   HomeStackParamsList,
@@ -15,6 +19,7 @@ type SearchResultsScreenRouteProp = RouteProp<
 
 type SearchResultsScreenProps = {
   route: SearchResultsScreenRouteProp;
+  navigation: ItemDetailNavigationProp;
 };
 
 type SearchResultsScreenState = {
@@ -57,11 +62,14 @@ export default class SearchResultsScreen extends Component<
 
   render() {
     const { searchedItems } = this.state;
+    const { navigation } = this.props;
     return (
       <ScreenContainer>
-        <Text style={styles.searchResultsHeader}> Results </Text>
         <View>
-          <FoodItemsList items={searchedItems}></FoodItemsList>
+          <FoodItemsList
+            items={searchedItems}
+            navigation={navigation}
+          ></FoodItemsList>
         </View>
       </ScreenContainer>
     );
