@@ -49,8 +49,12 @@ export default class HomeScreen extends Component<
     axios
       .get(route)
       .then((response) => {
+        const markedItems = response.data.map((data) =>
+          convertToMarkedFoodItem(data)
+        );
+
         this.setState({
-          markedItems: (response.data as unknown) as MarkedFoodItem[],
+          markedItems: markedItems,
           isLoading: false,
         });
       })
@@ -60,6 +64,7 @@ export default class HomeScreen extends Component<
   render() {
     const { navigation } = this.props;
     const { markedItems, searchString } = this.state;
+
     return (
       <ScreenContainer>
         <SearchBar
@@ -83,6 +88,24 @@ export default class HomeScreen extends Component<
       </ScreenContainer>
     );
   }
+}
+
+function convertToMarkedFoodItem(data: any): MarkedFoodItem {
+  const markedFoodItem = {
+    id: data['item_id'],
+    created_at: data['created_at'],
+    updated_at: data['updated_at'],
+    image_url: data['image_url'],
+    num_reviews: data['num_reviews'],
+    rating: data['rating'],
+    food_name: data['food_name'],
+    brand_name: data['brand_name'],
+    nix_item_id: data['nix_item_id'],
+    user_id: data['user_id'],
+    marked_food_item_id: data['id'],
+  };
+
+  return markedFoodItem;
 }
 
 const styles = StyleSheet.create({

@@ -26,10 +26,13 @@ export type FoodItem = {
   food_name: string;
   brand_name: string;
   nix_item_id: string;
-  nix_brand_id: string;
+  nix_brand_id?: string;
 };
 
-export type MarkedFoodItem = FoodItem & { user_id: number; item_id: number };
+export type MarkedFoodItem = FoodItem & {
+  user_id: number;
+  marked_food_item_id: number;
+};
 
 export type FoodItemDetail = {
   food_name: string;
@@ -52,4 +55,17 @@ export type FoodItemDetail = {
     thumb: 'string';
   };
   nix_item_id: string;
+};
+
+export type Review = {
+  id: number;
+  user_id: number;
+  profile_picture_url?: string;
+  first_name: string;
+  last_name: string;
+  item_id: number;
+  content: string;
+  rating: number;
+  created_at: Date;
+  updated_at: Date;
 };

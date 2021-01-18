@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { ScreenContainer } from 'react-native-screens';
 import { Text, StyleSheet, View, Image } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { HomeStackParamsList } from '../types';
-import { FoodItemDetail } from '../types';
+import { HomeStackParamsList, FoodItemDetail, Review } from '../types';
 import { getIpAddress } from '../utils';
 import axios from 'axios';
 import StarRating from 'react-native-star-rating';
@@ -22,6 +21,7 @@ type ItemDetailScreenProps = {
 
 type ItemDetailScreenState = {
   itemDetail?: FoodItemDetail;
+  reviews: Review[];
   isLoading: boolean;
 };
 
@@ -35,33 +35,51 @@ export default class ItemDetailScreen extends Component<
     this.state = {
       isLoading: false,
       itemDetail: undefined,
+      reviews: [],
     };
   }
 
   componentDidMount() {
     const { route } = this.props;
-    // this.setState({ isLoading: true });
-    // const url =
-    //   'http://' +
-    //   getIpAddress() +
-    //   ':3000/items/search/detail?nix_item_id=' +
-    //   route.params.item.nix_item_id;
+    this.setState({ isLoading: true });
 
-    // axios
-    //   .get(url)
-    //   .then((response) => {
-    //     this.setState({
-    //       itemDetail: (response.data as unknown) as FoodItemDetail,
-    //       isLoading: false,
-    //     });
-    //   })
-    //   .catch((error) => console.log(error));
+    const detailUrl =
+      'http://' +
+      getIpAddress() +
+      ':3000/items/search/detail?nix_item_id=' +
+      route.params.item.nix_item_id;
+
+    axios
+      .get(detailUrl)
+      .then((response) => {
+        this.setState({
+          itemDetail: (response.data as unknown) as FoodItemDetail,
+          isLoading: false,
+        });
+      })
+      .catch((error) => console.log(error));
+
+    const reviewsUrl =
+      'http://' +
+      getIpAddress() +
+      ':3000/reviewsByItemId?itemId=' +
+      route.params.item.id;
+
+    axios
+      .get(reviewsUrl)
+      .then((response) => {
+        this.setState({
+          reviews: (response.data as unknown) as Review[],
+        });
+      })
+      .catch((error) => console.log(error));
 
     // We also want to make requests to our "health endpoint" when that is ready + get reviews endpoint
   }
 
   render() {
     const { route } = this.props;
+    const { itemDetail, reviews } = this.state;
     const item = route.params.item;
 
     return (
@@ -87,21 +105,31 @@ export default class ItemDetailScreen extends Component<
             </View>
           </View>
           <View style={styles.sectionSeparator} />
-          <Collapse style={styles.nutritionContainer}>
-            <CollapseHeader>
-              <View>
-                <Text style={styles.sectionHeader}>Nutrition</Text>
-              </View>
-            </CollapseHeader>
-            <CollapseBody>
-              <Text>Ta daa!</Text>
-            </CollapseBody>
-          </Collapse>
+          {createNutritionSection(itemDetail)}
           <View style={styles.sectionSeparator} />
+          <Text style={styles.sectionHeader}>Reviews</Text>
         </View>
       </ScreenContainer>
     );
   }
+}
+
+function createNutritionSection(itemDetail: FoodItemDetail) {
+  return (
+    <Collapse style={styles.nutritionContainer}>
+      <CollapseHeader>
+        <View>
+          <Text style={styles.sectionHeader}>Nutrition</Text>
+        </View>
+      </CollapseHeader>
+      <CollapseBody>
+        <Text>
+          {' '}
+          Calories: {itemDetail ? itemDetail.nf_calories : 'unknown'}
+        </Text>
+      </CollapseBody>
+    </Collapse>
+  );
 }
 
 const styles = StyleSheet.create({
