@@ -20,6 +20,8 @@ import {
   AccordionList,
 } from 'accordion-collapse-react-native';
 import ReviewsList from '../components/ReviewsList';
+import ActionButton from '../components/ActionButton';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 // We need the List inside of ScrollView
 LogBox.ignoreLogs([
@@ -108,19 +110,25 @@ export default class ItemDetailScreen extends Component<
           <View style={styles.infoContainer}>
             <Text style={styles.foodNameText}>{item.food_name}</Text>
             <Text style={styles.brandNameText}>by {item.brand_name}</Text>
-            <View style={styles.ratingContainer}>
-              <StarRating
-                disabled={true}
-                maxStars={5}
-                rating={item.rating}
-                fullStarColor={'#2AD478'}
-                emptyStarColor={'#2AD478'}
-                starSize={30}
-              ></StarRating>
-              <Text style={styles.numReviewsText}>
-                {item.num_reviews}
-                {item.num_reviews == 1 ? ' review' : ' reviews'}
-              </Text>
+            <View style={styles.ratingReviewButtonContainer}>
+              <View style={styles.ratingContainer}>
+                <StarRating
+                  disabled={true}
+                  maxStars={5}
+                  rating={item.rating}
+                  fullStarColor={'#2AD478'}
+                  emptyStarColor={'#2AD478'}
+                  starSize={30}
+                ></StarRating>
+                <Text style={styles.numReviewsText}>
+                  {item.num_reviews}
+                  {item.num_reviews == 1 ? ' review' : ' reviews'}
+                </Text>
+              </View>
+
+              <View style={styles.buttonContainer}>
+                <ActionButton buttonText={'Review'}></ActionButton>
+              </View>
             </View>
           </View>
           <View style={styles.sectionSeparator} />
@@ -228,8 +236,13 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginLeft: 20,
   },
+  ratingReviewButtonContainer: {
+    paddingTop: 10,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
   ratingContainer: {
-    marginTop: 10,
+    paddingTop: 5,
     flexDirection: 'row',
   },
   numReviewsText: {
@@ -247,6 +260,10 @@ const styles = StyleSheet.create({
   },
   reviewsContainer: {
     marginLeft: 20,
+  },
+  buttonContainer: {
+    // marginTop: 10,
+    marginRight: 20,
   },
 });
 
