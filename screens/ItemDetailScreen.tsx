@@ -1,6 +1,13 @@
 import React, { Component } from 'react';
 import { ScreenContainer } from 'react-native-screens';
-import { Text, StyleSheet, View, Image } from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  ScrollView,
+  LogBox,
+} from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import { HomeStackParamsList, FoodItemDetail, Review } from '../types';
 import { getIpAddress } from '../utils';
@@ -12,6 +19,12 @@ import {
   CollapseBody,
   AccordionList,
 } from 'accordion-collapse-react-native';
+import ReviewsList from '../components/ReviewsList';
+
+// We need the List inside of ScrollView
+LogBox.ignoreLogs([
+  'VirtualizedLists should never be nested inside plain ScrollViews',
+]);
 
 type ItemDetailScreenRouteProp = RouteProp<HomeStackParamsList, 'ItemDetail'>;
 
@@ -84,7 +97,7 @@ export default class ItemDetailScreen extends Component<
 
     return (
       <ScreenContainer>
-        <View>
+        <ScrollView nestedScrollEnabled={false}>
           <Image source={{ uri: item.image_url }} style={styles.foodImage} />
           <View style={styles.infoContainer}>
             <Text style={styles.foodNameText}>{item.food_name}</Text>
@@ -99,7 +112,7 @@ export default class ItemDetailScreen extends Component<
                 starSize={30}
               ></StarRating>
               <Text style={styles.numReviewsText}>
-                {item.num_reviews}{' '}
+                {item.num_reviews}
                 {item.num_reviews == 1 ? 'review' : 'reviews'}
               </Text>
             </View>
@@ -107,8 +120,9 @@ export default class ItemDetailScreen extends Component<
           <View style={styles.sectionSeparator} />
           {createNutritionSection(itemDetail)}
           <View style={styles.sectionSeparator} />
-          <Text style={styles.sectionHeader}>Reviews</Text>
-        </View>
+
+          {createReviewsSection(reviews)}
+        </ScrollView>
       </ScreenContainer>
     );
   }
@@ -129,6 +143,19 @@ function createNutritionSection(itemDetail: FoodItemDetail) {
         </Text>
       </CollapseBody>
     </Collapse>
+  );
+}
+
+function createReviewsSection(reviews: Review[]) {
+  return (
+    <View style={styles.reviewsContainer}>
+      <Text style={styles.sectionHeader}>Reviews</Text>
+      {reviews.length === 0 ? (
+        <Text> Be the first to review </Text>
+      ) : (
+        <ReviewsList reviews={reviews}></ReviewsList>
+      )}
+    </View>
   );
 }
 
@@ -171,6 +198,9 @@ const styles = StyleSheet.create({
     fontSize: 18,
   },
   nutritionContainer: {
+    marginLeft: 20,
+  },
+  reviewsContainer: {
     marginLeft: 20,
   },
 });
