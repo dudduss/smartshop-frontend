@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 import { Review } from '../types';
 import StarRating from 'react-native-star-rating';
+import * as moment from 'moment';
 
 interface ReviewItemProps {
   review: Review;
@@ -32,20 +33,30 @@ export default class ReviewItem extends Component<ReviewItemProps> {
                 review.last_name[0].toUpperCase() +
                 '.'}
             </Text>
-            <StarRating
-              disabled={true}
-              maxStars={5}
-              rating={review.rating}
-              fullStarColor={'#2AD478'}
-              emptyStarColor={'#2AD478'}
-              starSize={20}
-            ></StarRating>
+            <View style={styles.ratingContainer}>
+              <StarRating
+                disabled={true}
+                maxStars={5}
+                rating={review.rating}
+                fullStarColor={'#2AD478'}
+                emptyStarColor={'#2AD478'}
+                starSize={20}
+              ></StarRating>
+              <Text style={styles.timestampText}>
+                {' '}
+                {timeStampString(review.created_at)}
+              </Text>
+            </View>
           </View>
         </View>
         <Text style={styles.contentText}>{review.content}</Text>
       </View>
     );
   }
+}
+
+function timeStampString(reviewDate: Date) {
+  return moment(reviewDate).fromNow();
 }
 
 const styles = StyleSheet.create({
@@ -74,8 +85,11 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   ratingContainer: {
-    marginTop: 5,
     flexDirection: 'row',
+  },
+  timestampText: {
+    marginLeft: 5,
+    fontSize: 12,
   },
   contentText: {
     marginRight: 10,

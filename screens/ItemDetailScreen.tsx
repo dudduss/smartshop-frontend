@@ -113,7 +113,7 @@ export default class ItemDetailScreen extends Component<
               ></StarRating>
               <Text style={styles.numReviewsText}>
                 {item.num_reviews}
-                {item.num_reviews == 1 ? 'review' : 'reviews'}
+                {item.num_reviews == 1 ? ' review' : ' reviews'}
               </Text>
             </View>
           </View>
