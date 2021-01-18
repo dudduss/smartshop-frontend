@@ -81,6 +81,12 @@ export default class ItemDetailScreen extends Component<
     axios
       .get(reviewsUrl)
       .then((response) => {
+        const reviews = (response.data as unknown) as Review[];
+        reviews.sort((a: Review, b: Review) => {
+          return (
+            new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          );
+        });
         this.setState({
           reviews: (response.data as unknown) as Review[],
         });

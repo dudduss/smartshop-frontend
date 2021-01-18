@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
 import { Review } from '../types';
 import StarRating from 'react-native-star-rating';
-import * as moment from 'moment';
+import moment from 'moment';
 
 interface ReviewItemProps {
   review: Review;
