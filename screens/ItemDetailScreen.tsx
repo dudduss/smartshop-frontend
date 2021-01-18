@@ -126,7 +126,6 @@ export default class ItemDetailScreen extends Component<
           <View style={styles.sectionSeparator} />
           {createNutritionSection(itemDetail)}
           <View style={styles.sectionSeparator} />
-
           {createReviewsSection(reviews)}
         </ScrollView>
       </ScreenContainer>
@@ -136,17 +135,60 @@ export default class ItemDetailScreen extends Component<
 
 function createNutritionSection(itemDetail: FoodItemDetail) {
   return (
-    <Collapse style={styles.nutritionContainer}>
+    <Collapse style={nutritionStyles.nutritionContainer}>
       <CollapseHeader>
         <View>
           <Text style={styles.sectionHeader}>Nutrition</Text>
         </View>
       </CollapseHeader>
       <CollapseBody>
-        <Text>
-          {' '}
-          Calories: {itemDetail ? itemDetail.nf_calories : 'unknown'}
-        </Text>
+        <View style={nutritionStyles.nutritionFactsContainer}>
+          <Text style={nutritionStyles.servingSizeText}>
+            <Text style={nutritionStyles.nutrientNameText}>Serving Size: </Text>
+            {itemDetail
+              ? itemDetail.serving_qty + itemDetail.serving_unit
+              : 'unknown'}
+          </Text>
+
+          <Text style={nutritionStyles.nutritionFactsText}>
+            <Text style={nutritionStyles.nutrientNameText}>Calories: </Text>
+            {itemDetail ? itemDetail.nf_calories : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Fat: </Text>
+            {itemDetail ? itemDetail.nf_total_fat + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsSubMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>
+              Saturated Fat:{' '}
+            </Text>
+            {itemDetail ? itemDetail.nf_saturated_fat + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Protein: </Text>
+            {itemDetail ? itemDetail.nf_protein + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Carbs: </Text>
+            {itemDetail ? itemDetail.nf_total_carbohydrate + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsSubMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Fiber: </Text>
+            {itemDetail ? itemDetail.nf_dietary_fiber + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsSubMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Sugar: </Text>
+            {itemDetail ? itemDetail.nf_sugars + 'g' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Cholestrol: </Text>
+            {itemDetail ? itemDetail.nf_cholesterol + 'mg' : 'unknown'}
+          </Text>
+          <Text style={nutritionStyles.nutritionFactsMacroText}>
+            <Text style={nutritionStyles.nutrientNameText}>Sodium: </Text>
+            {itemDetail ? itemDetail.nf_sodium + 'mg' : 'unknown'}
+          </Text>
+        </View>
       </CollapseBody>
     </Collapse>
   );
@@ -203,10 +245,34 @@ const styles = StyleSheet.create({
   sectionHeader: {
     fontSize: 18,
   },
+  reviewsContainer: {
+    marginLeft: 20,
+  },
+});
+
+const nutritionStyles = StyleSheet.create({
+  nutrientNameText: {
+    fontWeight: '600',
+  },
   nutritionContainer: {
     marginLeft: 20,
   },
-  reviewsContainer: {
+  nutritionFactsText: {
+    fontSize: 15,
+  },
+  nutritionFactsMacroText: {
+    fontSize: 15,
+    marginLeft: 10,
+  },
+  nutritionFactsSubMacroText: {
+    fontSize: 15,
     marginLeft: 20,
+  },
+  servingSizeText: {
+    fontSize: 15,
+    marginBottom: 10,
+  },
+  nutritionFactsContainer: {
+    marginTop: 15,
   },
 });
