@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import {
-  HomeStackParamsList,
+  RootStackParamsList,
   FoodItemDetail,
   Review,
   WriteReviewNavigationProp,
@@ -34,7 +34,7 @@ LogBox.ignoreLogs([
   'Cannot update a component from inside the function body of a different component',
 ]);
 
-type ItemDetailScreenRouteProp = RouteProp<HomeStackParamsList, 'ItemDetail'>;
+type ItemDetailScreenRouteProp = RouteProp<RootStackParamsList, 'ItemDetail'>;
 
 type ItemDetailScreenProps = {
   route: ItemDetailScreenRouteProp;
@@ -141,14 +141,17 @@ export default class ItemDetailScreen extends Component<
               </View>
 
               <View style={styles.buttonContainer}>
-                <TouchableHighlight
+                <ActionButton
                   onPress={() => {
                     const review = findReviewOfUser(reviews, userId);
-                    navigation.push('WriteReview', { item, userId, review });
+                    navigation.push('WriteReview', {
+                      item,
+                      userId,
+                      review,
+                    });
                   }}
-                >
-                  <ActionButton buttonText={'Review'}></ActionButton>
-                </TouchableHighlight>
+                  buttonText={'Review'}
+                ></ActionButton>
               </View>
             </View>
           </View>

@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { GestureResponderEvent, StyleSheet, Text, View } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 type ActionButtonProps = {
   buttonText: string;
+  onPress: (event: GestureResponderEvent) => void;
 };
 
 export default class ActionButton extends Component<ActionButtonProps> {
@@ -11,11 +13,13 @@ export default class ActionButton extends Component<ActionButtonProps> {
   }
 
   render() {
-    const { buttonText } = this.props;
+    const { buttonText, onPress } = this.props;
     return (
-      <View style={styles.buttonContainer}>
-        <Text style={styles.buttonText}> {buttonText}</Text>
-      </View>
+      <TouchableHighlight onPress={onPress}>
+        <View style={styles.buttonContainer}>
+          <Text style={styles.buttonText}> {buttonText}</Text>
+        </View>
+      </TouchableHighlight>
     );
   }
 }
@@ -23,7 +27,7 @@ export default class ActionButton extends Component<ActionButtonProps> {
 const styles = StyleSheet.create({
   buttonContainer: {
     backgroundColor: '#2AD478',
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     paddingVertical: 10,
     borderRadius: 5,
   },

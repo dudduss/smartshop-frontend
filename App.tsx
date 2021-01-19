@@ -6,7 +6,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SearchResultsScreen from './screens/SearchResultsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { HomeStackParamsList } from './types';
+import { HomeStackParamsList, RootStackParamsList } from './types';
 import ItemDetailScreen from './screens/ItemDetailScreen';
 import WriteReviewScreen from './screens/WriteReviewScreen';
 import { Button } from 'react-native';
@@ -15,6 +15,7 @@ const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
 
 const HomeStack = createStackNavigator<HomeStackParamsList>();
+const RootStack = createStackNavigator<RootStackParamsList>();
 const ProfileStack = createStackNavigator();
 
 class HomeStackScreen extends Component {
@@ -48,12 +49,31 @@ class HomeStackScreen extends Component {
             title: route.params.item.food_name,
           })}
         ></HomeStack.Screen>
-        <HomeStack.Screen
+        {/* <HomeStack.Screen
           name='WriteReview'
           component={WriteReviewScreen}
           options={{ title: 'Review' }}
-        ></HomeStack.Screen>
+        ></HomeStack.Screen> */}
       </HomeStack.Navigator>
+    );
+  }
+}
+
+class RootStackScreen extends Component {
+  render() {
+    return (
+      <RootStack.Navigator mode='modal'>
+        <RootStack.Screen
+          name='Home'
+          component={HomeStackScreen}
+          options={{ headerShown: false }}
+        />
+        <RootStack.Screen
+          name='WriteReview'
+          component={WriteReviewScreen}
+          options={{ title: 'Review', headerShown: false }}
+        />
+      </RootStack.Navigator>
     );
   }
 }
@@ -88,7 +108,7 @@ export default class App extends Component {
         <Tabs.Navigator tabBarOptions={{ activeTintColor: '#2AD478' }}>
           <Tabs.Screen
             name='Home'
-            component={HomeStackScreen}
+            component={RootStackScreen}
             options={{
               tabBarLabel: 'Home',
               tabBarIcon: ({ color, size }) => (

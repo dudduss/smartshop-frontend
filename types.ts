@@ -4,21 +4,28 @@ export type HomeStackParamsList = {
   Home: undefined;
   SearchResults: { searchString: string; userId: number };
   ItemDetail: { item: FoodItem; userId: number };
+  // WriteReview: { item: FoodItem; userId: number; review?: Review };
+};
+
+export type RootStackParamsList = {
+  Home: undefined;
+  SearchResults: { searchString: string; userId: number };
+  ItemDetail: { item: FoodItem; userId: number };
   WriteReview: { item: FoodItem; userId: number; review?: Review };
 };
 
 export type SearchResultsNavigationProp = StackNavigationProp<
-  HomeStackParamsList,
+  RootStackParamsList,
   'SearchResults'
 >;
 
 export type ItemDetailNavigationProp = StackNavigationProp<
-  HomeStackParamsList,
+  RootStackParamsList,
   'ItemDetail'
 >;
 
 export type WriteReviewNavigationProp = StackNavigationProp<
-  HomeStackParamsList,
+  RootStackParamsList,
   'WriteReview'
 >;
 

@@ -3,7 +3,7 @@ import { ScreenContainer } from 'react-native-screens';
 import { Text, StyleSheet, View } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
 import {
-  HomeStackParamsList,
+  RootStackParamsList,
   ItemDetailNavigationProp,
   FoodItem,
 } from '../types';
@@ -13,7 +13,7 @@ import FoodItemsList from '../components/FoodItemsList';
 import { StackNavigationProp } from '@react-navigation/stack';
 
 type SearchResultsScreenRouteProp = RouteProp<
-  HomeStackParamsList,
+  RootStackParamsList,
   'SearchResults'
 >;
 
