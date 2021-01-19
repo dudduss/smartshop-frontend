@@ -13,6 +13,7 @@ import { FoodItem, MarkedFoodItem, ItemDetailNavigationProp } from '../types';
 type FoodItemsListProps = {
   items: MarkedFoodItem[] | FoodItem[];
   navigation: ItemDetailNavigationProp;
+  userId: number;
 };
 
 export default class FoodItemsList extends Component<FoodItemsListProps> {
@@ -21,7 +22,7 @@ export default class FoodItemsList extends Component<FoodItemsListProps> {
   }
 
   render() {
-    const { items, navigation } = this.props;
+    const { items, navigation, userId } = this.props;
 
     return (
       <View style={styles.container}>
@@ -29,7 +30,7 @@ export default class FoodItemsList extends Component<FoodItemsListProps> {
           data={items}
           renderItem={({ item }) => (
             <TouchableHighlight
-              onPress={() => navigation.push('ItemDetail', { item })}
+              onPress={() => navigation.push('ItemDetail', { item, userId })}
             >
               <FoodItemView item={item}></FoodItemView>
             </TouchableHighlight>

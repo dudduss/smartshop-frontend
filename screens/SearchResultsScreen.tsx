@@ -62,13 +62,15 @@ export default class SearchResultsScreen extends Component<
 
   render() {
     const { searchedItems } = this.state;
-    const { navigation } = this.props;
+    const { navigation, route } = this.props;
+    const userId = route.params.userId;
     return (
       <ScreenContainer>
         <View>
           <FoodItemsList
             items={searchedItems}
             navigation={navigation}
+            userId={userId}
           ></FoodItemsList>
         </View>
       </ScreenContainer>

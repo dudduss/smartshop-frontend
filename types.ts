@@ -2,8 +2,9 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 export type HomeStackParamsList = {
   Home: undefined;
-  SearchResults: { searchString: string };
-  ItemDetail: { item: FoodItem };
+  SearchResults: { searchString: string; userId: number };
+  ItemDetail: { item: FoodItem; userId: number };
+  WriteReview: { item: FoodItem; userId: number; review?: Review };
 };
 
 export type SearchResultsNavigationProp = StackNavigationProp<
@@ -14,6 +15,11 @@ export type SearchResultsNavigationProp = StackNavigationProp<
 export type ItemDetailNavigationProp = StackNavigationProp<
   HomeStackParamsList,
   'ItemDetail'
+>;
+
+export type WriteReviewNavigationProp = StackNavigationProp<
+  HomeStackParamsList,
+  'WriteReview'
 >;
 
 export type FoodItem = {

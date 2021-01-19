@@ -8,6 +8,8 @@ import SearchResultsScreen from './screens/SearchResultsScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HomeStackParamsList } from './types';
 import ItemDetailScreen from './screens/ItemDetailScreen';
+import WriteReviewScreen from './screens/WriteReviewScreen';
+import { Button } from 'react-native';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -45,6 +47,11 @@ class HomeStackScreen extends Component {
           options={({ route }) => ({
             title: route.params.item.food_name,
           })}
+        ></HomeStack.Screen>
+        <HomeStack.Screen
+          name='WriteReview'
+          component={WriteReviewScreen}
+          options={{ title: 'Review' }}
         ></HomeStack.Screen>
       </HomeStack.Navigator>
     );

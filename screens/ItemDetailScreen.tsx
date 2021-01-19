@@ -9,7 +9,12 @@ import {
   LogBox,
 } from 'react-native';
 import { RouteProp } from '@react-navigation/native';
-import { HomeStackParamsList, FoodItemDetail, Review } from '../types';
+import {
+  HomeStackParamsList,
+  FoodItemDetail,
+  Review,
+  WriteReviewNavigationProp,
+} from '../types';
 import { getIpAddress } from '../utils';
 import axios from 'axios';
 import StarRating from 'react-native-star-rating';
@@ -26,12 +31,14 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 // We need the List inside of ScrollView
 LogBox.ignoreLogs([
   'VirtualizedLists should never be nested inside plain ScrollViews',
+  'Cannot update a component from inside the function body of a different component',
 ]);
 
 type ItemDetailScreenRouteProp = RouteProp<HomeStackParamsList, 'ItemDetail'>;
 
 type ItemDetailScreenProps = {
   route: ItemDetailScreenRouteProp;
+  navigation: WriteReviewNavigationProp;
 };
 
 type ItemDetailScreenState = {
@@ -99,9 +106,10 @@ export default class ItemDetailScreen extends Component<
   }
 
   render() {
-    const { route } = this.props;
+    const { route, navigation } = this.props;
     const { itemDetail, reviews } = this.state;
     const item = route.params.item;
+    const userId = route.params.userId;
 
     return (
       <ScreenContainer>
@@ -127,7 +135,14 @@ export default class ItemDetailScreen extends Component<
               </View>
 
               <View style={styles.buttonContainer}>
-                <ActionButton buttonText={'Review'}></ActionButton>
+                <TouchableHighlight
+                  onPress={() => {
+                    const review = findReviewOfUser(reviews, userId);
+                    navigation.push('WriteReview', { item, userId, review });
+                  }}
+                >
+                  <ActionButton buttonText={'Review'}></ActionButton>
+                </TouchableHighlight>
               </View>
             </View>
           </View>
@@ -213,6 +228,14 @@ function createReviewsSection(reviews: Review[]) {
       )}
     </View>
   );
+}
+
+function findReviewOfUser(
+  reviews: Review[],
+  userId: number
+): Review | undefined {
+  const review = reviews.find((item) => item.user_id === userId);
+  return review;
 }
 
 const styles = StyleSheet.create({

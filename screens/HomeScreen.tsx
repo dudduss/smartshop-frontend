@@ -17,6 +17,7 @@ type HomeScreenState = {
   markedItems: MarkedFoodItem[];
   searchString: string;
   isLoading: boolean;
+  userId: number;
 };
 
 type HomeScreenProps = {
@@ -34,6 +35,7 @@ export default class HomeScreen extends Component<
       searchString: '',
       markedItems: [],
       isLoading: false,
+      userId: 5, // This will update after authentication and be passed through the rest of the app (likely gets passed from login screen and saved to local device)
     };
   }
 
@@ -63,7 +65,7 @@ export default class HomeScreen extends Component<
 
   render() {
     const { navigation } = this.props;
-    const { markedItems, searchString } = this.state;
+    const { markedItems, searchString, userId } = this.state;
 
     return (
       <ScreenContainer>
@@ -71,7 +73,7 @@ export default class HomeScreen extends Component<
           placeholder='Search Foods...'
           onChangeText={this.updateSearch}
           onSubmitEditing={() =>
-            navigation.push('SearchResults', { searchString })
+            navigation.push('SearchResults', { searchString, userId })
           }
           value={searchString}
           lightTheme={true}
@@ -83,6 +85,7 @@ export default class HomeScreen extends Component<
           <FoodItemsList
             items={markedItems}
             navigation={navigation as ItemDetailNavigationProp}
+            userId={userId}
           ></FoodItemsList>
         </View>
       </ScreenContainer>
