@@ -1,12 +1,5 @@
 import React, { Component } from 'react';
-import {
-  View,
-  FlatList,
-  Text,
-  Image,
-  StyleSheet,
-  TouchableHighlight,
-} from 'react-native';
+import { View, FlatList, StyleSheet, TouchableHighlight } from 'react-native';
 import FoodItemView from './FoodItemView';
 import { FoodItem, MarkedFoodItem, ItemDetailNavigationProp } from '../types';
 

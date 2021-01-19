@@ -1,19 +1,54 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, Image, View } from 'react-native';
-import { FoodItem, MarkedFoodItem } from '../types';
+import { FoodItem, MarkedFoodItem, Review } from '../types';
+import { getIpAddress, getItemNumReviews, getItemRating } from '../utils';
+import axios from 'axios';
 import StarRating from 'react-native-star-rating';
 
-interface FoodItemViewProps {
+type FoodItemViewProps = {
   item: MarkedFoodItem | FoodItem;
-}
+};
 
-export default class FoodItemView extends Component<FoodItemViewProps> {
+type FoodItemViewState = {
+  numReviews: number;
+  rating: number;
+};
+
+export default class FoodItemView extends Component<
+  FoodItemViewProps,
+  FoodItemViewState
+> {
   constructor(props: FoodItemViewProps) {
     super(props);
+
+    this.state = {
+      numReviews: 0,
+      rating: 0,
+    };
+  }
+
+  componentDidMount() {
+    const { item } = this.props;
+
+    const reviewsUrl =
+      'http://' + getIpAddress() + ':3000/reviewsByItemId?itemId=' + item.id;
+
+    axios
+      .get(reviewsUrl)
+      .then((response) => {
+        const itemReviews = (response.data as unknown) as Review[];
+
+        this.setState({
+          numReviews: getItemNumReviews(itemReviews),
+          rating: getItemRating(itemReviews),
+        });
+      })
+      .catch((error) => console.log(error));
   }
 
   render() {
     const { item } = this.props;
+    const { rating, numReviews } = this.state;
     return (
       <View style={styles.container}>
         <Image source={{ uri: item.image_url }} style={styles.foodImage} />
@@ -24,14 +59,13 @@ export default class FoodItemView extends Component<FoodItemViewProps> {
             <StarRating
               disabled={true}
               maxStars={5}
-              rating={item.rating}
+              rating={rating}
               fullStarColor={'#2AD478'}
               emptyStarColor={'#2AD478'}
               starSize={30}
             ></StarRating>
             <Text style={styles.numReviewsText}>
-              ({item.num_reviews} {item.num_reviews == 1 ? 'review' : 'reviews'}
-              )
+              ({numReviews} {numReviews == 1 ? 'review' : 'reviews'})
             </Text>
           </View>
         </View>

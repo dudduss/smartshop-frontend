@@ -78,9 +78,7 @@ export default class HomeScreen extends Component<
           value={searchString}
           lightTheme={true}
         />
-
         <Text style={styles.savedItemsHeader}> Your Saved Items </Text>
-
         <View>
           <FoodItemsList
             items={markedItems}
@@ -99,8 +97,6 @@ function convertToMarkedFoodItem(data: any): MarkedFoodItem {
     created_at: data['created_at'],
     updated_at: data['updated_at'],
     image_url: data['image_url'],
-    num_reviews: data['num_reviews'],
-    rating: data['rating'],
     food_name: data['food_name'],
     brand_name: data['brand_name'],
     nix_item_id: data['nix_item_id'],

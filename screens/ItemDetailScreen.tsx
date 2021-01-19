@@ -15,7 +15,7 @@ import {
   Review,
   WriteReviewNavigationProp,
 } from '../types';
-import { getIpAddress } from '../utils';
+import { getIpAddress, getItemNumReviews, getItemRating } from '../utils';
 import axios from 'axios';
 import StarRating from 'react-native-star-rating';
 import {
@@ -45,6 +45,8 @@ type ItemDetailScreenState = {
   itemDetail?: FoodItemDetail;
   reviews: Review[];
   isLoading: boolean;
+  numReviews: number;
+  rating: number;
 };
 
 export default class ItemDetailScreen extends Component<
@@ -58,6 +60,8 @@ export default class ItemDetailScreen extends Component<
       isLoading: false,
       itemDetail: undefined,
       reviews: [],
+      numReviews: 0,
+      rating: 0,
     };
   }
 
@@ -97,7 +101,9 @@ export default class ItemDetailScreen extends Component<
           );
         });
         this.setState({
-          reviews: (response.data as unknown) as Review[],
+          reviews: reviews,
+          rating: getItemRating(reviews),
+          numReviews: getItemNumReviews(reviews),
         });
       })
       .catch((error) => console.log(error));
@@ -107,7 +113,7 @@ export default class ItemDetailScreen extends Component<
 
   render() {
     const { route, navigation } = this.props;
-    const { itemDetail, reviews } = this.state;
+    const { itemDetail, reviews, rating, numReviews } = this.state;
     const item = route.params.item;
     const userId = route.params.userId;
 
@@ -123,14 +129,14 @@ export default class ItemDetailScreen extends Component<
                 <StarRating
                   disabled={true}
                   maxStars={5}
-                  rating={item.rating}
+                  rating={rating}
                   fullStarColor={'#2AD478'}
                   emptyStarColor={'#2AD478'}
                   starSize={30}
                 ></StarRating>
                 <Text style={styles.numReviewsText}>
-                  {item.num_reviews}
-                  {item.num_reviews == 1 ? ' review' : ' reviews'}
+                  {numReviews}
+                  {numReviews == 1 ? ' review' : ' reviews'}
                 </Text>
               </View>
 
