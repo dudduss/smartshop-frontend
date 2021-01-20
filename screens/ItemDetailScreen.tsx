@@ -69,6 +69,10 @@ export default class ItemDetailScreen extends Component<
     const { route } = this.props;
     this.setState({ isLoading: true });
 
+    this.props.navigation.addListener('focus', () => {
+      this.componentDidMount();
+    });
+
     const detailUrl =
       'http://' +
       getIpAddress() +
@@ -231,7 +235,9 @@ function createReviewsSection(reviews: Review[]) {
     <View style={styles.reviewsContainer}>
       <Text style={styles.sectionHeader}>Reviews</Text>
       {reviews.length === 0 ? (
-        <Text> Be the first to review </Text>
+        <Text style={styles.noReviewsText}>
+          No reviews yet, be the first one!
+        </Text>
       ) : (
         <ReviewsList reviews={reviews}></ReviewsList>
       )}
@@ -292,6 +298,10 @@ const styles = StyleSheet.create({
   },
   reviewsContainer: {
     marginLeft: 20,
+  },
+  noReviewsText: {
+    marginTop: 50,
+    textAlign: 'center',
   },
   buttonContainer: {
     // marginTop: 10,

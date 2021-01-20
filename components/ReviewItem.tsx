@@ -49,7 +49,9 @@ export default class ReviewItem extends Component<ReviewItemProps> {
             </View>
           </View>
         </View>
-        <Text style={styles.contentText}>{review.content}</Text>
+        {review.content.length > 0 && (
+          <Text style={styles.contentText}>{review.content}</Text>
+        )}
       </View>
     );
   }
