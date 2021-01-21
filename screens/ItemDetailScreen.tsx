@@ -14,8 +14,14 @@ import {
   FoodItemDetail,
   Review,
   WriteReviewNavigationProp,
+  MarkedFoodItem,
 } from '../types';
-import { getIpAddress, getItemNumReviews, getItemRating } from '../utils';
+import {
+  getIpAddress,
+  getItemNumReviews,
+  getItemRating,
+  convertToMarkedFoodItem,
+} from '../utils';
 import axios from 'axios';
 import StarRating from 'react-native-star-rating';
 import {
@@ -26,7 +32,10 @@ import {
 } from 'accordion-collapse-react-native';
 import ReviewsList from '../components/ReviewsList';
 import ActionButton from '../components/ActionButton';
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import {
+  TouchableHighlight,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
 
 // We need the List inside of ScrollView
 LogBox.ignoreLogs([
@@ -45,6 +54,7 @@ type ItemDetailScreenState = {
   itemDetail?: FoodItemDetail;
   reviews: Review[];
   isLoading: boolean;
+  isMarked: boolean;
   numReviews: number;
   rating: number;
 };
@@ -59,10 +69,57 @@ export default class ItemDetailScreen extends Component<
     this.state = {
       isLoading: false,
       itemDetail: undefined,
+      isMarked: false,
       reviews: [],
       numReviews: 0,
       rating: 0,
     };
+  }
+
+  getMarkedItem() {
+    const { route } = this.props;
+
+    const markedItemsUrl =
+      'http://' +
+      getIpAddress() +
+      ':3000/markedItemsByUserId?userId=' +
+      route.params.userId;
+
+    axios
+      .get(markedItemsUrl)
+      .then((response) => {
+        const markedItems: MarkedFoodItem[] = response.data.map((data) =>
+          convertToMarkedFoodItem(data)
+        );
+
+        const markedItem = markedItems.find(
+          (markedItem) => markedItem.id === route.params.item.id
+        );
+
+        this.setState({
+          isMarked: markedItem ? true : false,
+        });
+      })
+      .catch((error) => console.log(error));
+  }
+
+  changeMarkedItem() {
+    const { route } = this.props;
+    const { isMarked } = this.state;
+
+    if (isMarked) {
+      const createdMarkedItemsUrl =
+        'http://' +
+        getIpAddress() +
+        ':3000/markedItemsByUserId?userId=' +
+        route.params.userId;
+
+      this.setState({
+        isMarked: false,
+      });
+
+      return;
+    }
   }
 
   componentDidMount() {
@@ -112,19 +169,37 @@ export default class ItemDetailScreen extends Component<
       })
       .catch((error) => console.log(error));
 
+    this.getMarkedItem();
+
     // We also want to make requests to our "health endpoint" when that is ready + get reviews endpoint
   }
 
   render() {
     const { route, navigation } = this.props;
-    const { itemDetail, reviews, rating, numReviews } = this.state;
+    const { itemDetail, reviews, rating, numReviews, isMarked } = this.state;
     const item = route.params.item;
     const userId = route.params.userId;
+    // console.log('userId: ', userId);
 
     return (
       <ScreenContainer>
         <ScrollView nestedScrollEnabled={false}>
-          <Image source={{ uri: item.image_url }} style={styles.foodImage} />
+          <View style={{ flexDirection: 'row' }}>
+            {isMarked ? (
+              <Image
+                source={require('../assets/bookmark_filled.png')}
+                style={styles.bookMarkImage}
+              ></Image>
+            ) : (
+              <Image
+                source={require('../assets/bookmark_unfilled.png')}
+                style={styles.bookMarkImage}
+              ></Image>
+            )}
+            <Image source={{ uri: item.image_url }} style={styles.foodImage} />
+
+            {/* </TouchableHighlight> */}
+          </View>
           <View style={styles.infoContainer}>
             <Text style={styles.foodNameText}>{item.food_name}</Text>
             <Text style={styles.brandNameText}>by {item.brand_name}</Text>
@@ -254,12 +329,25 @@ function findReviewOfUser(
 }
 
 const styles = StyleSheet.create({
+  bookMarkImage: {
+    width: 30,
+    height: 30,
+    position: 'absolute',
+    margin: 15,
+    right: 0,
+  },
+  touchable: {
+    width: 30,
+    height: 30,
+    // margin: 15,
+  },
   foodImage: {
     marginTop: 20,
     marginLeft: 'auto',
     marginRight: 'auto',
     width: '40%',
     paddingTop: '40%',
+    position: 'relative',
   },
   foodNameText: {
     fontSize: 20,
