@@ -11,7 +11,7 @@ import {
   SearchResultsNavigationProp,
   ItemDetailNavigationProp,
 } from '../types';
-import { getIpAddress } from '../utils';
+import { getIpAddress, convertToMarkedFoodItem } from '../utils';
 
 type HomeScreenState = {
   markedItems: MarkedFoodItem[];
@@ -89,22 +89,6 @@ export default class HomeScreen extends Component<
       </ScreenContainer>
     );
   }
-}
-
-function convertToMarkedFoodItem(data: any): MarkedFoodItem {
-  const markedFoodItem = {
-    id: data['item_id'],
-    created_at: data['created_at'],
-    updated_at: data['updated_at'],
-    image_url: data['image_url'],
-    food_name: data['food_name'],
-    brand_name: data['brand_name'],
-    nix_item_id: data['nix_item_id'],
-    user_id: data['user_id'],
-    marked_food_item_id: data['id'],
-  };
-
-  return markedFoodItem;
 }
 
 const styles = StyleSheet.create({
