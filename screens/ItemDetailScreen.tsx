@@ -108,17 +108,40 @@ export default class ItemDetailScreen extends Component<
     const { isMarked } = this.state;
 
     if (isMarked) {
-      const createdMarkedItemsUrl =
+      const deleteMarkedItemsUrl =
         'http://' +
         getIpAddress() +
-        ':3000/markedItemsByUserId?userId=' +
-        route.params.userId;
+        ':3000/markedItems?userId=' +
+        route.params.userId +
+        '&itemId=' +
+        route.params.item.id;
 
-      this.setState({
-        isMarked: false,
-      });
+      axios
+        .delete(deleteMarkedItemsUrl)
+        .then((response) => {
+          this.setState({
+            isMarked: false,
+          });
+        })
+        .catch((error) => console.log(error));
 
       return;
+    } else {
+      const createdMarkedItemsUrl =
+        'http://' + getIpAddress() + ':3000/markedItems';
+
+      const body = {
+        userId: route.params.userId,
+        itemId: route.params.item.id,
+      };
+      axios
+        .post(createdMarkedItemsUrl, body)
+        .then((response) => {
+          this.setState({
+            isMarked: true,
+          });
+        })
+        .catch((error) => console.log(error));
     }
   }
 
@@ -130,21 +153,21 @@ export default class ItemDetailScreen extends Component<
       this.componentDidMount();
     });
 
-    const detailUrl =
-      'http://' +
-      getIpAddress() +
-      ':3000/items/search/detail?nix_item_id=' +
-      route.params.item.nix_item_id;
+    // const detailUrl =
+    //   'http://' +
+    //   getIpAddress() +
+    //   ':3000/items/search/detail?nix_item_id=' +
+    //   route.params.item.nix_item_id;
 
-    axios
-      .get(detailUrl)
-      .then((response) => {
-        this.setState({
-          itemDetail: (response.data as unknown) as FoodItemDetail,
-          isLoading: false,
-        });
-      })
-      .catch((error) => console.log(error));
+    // axios
+    //   .get(detailUrl)
+    //   .then((response) => {
+    //     this.setState({
+    //       itemDetail: (response.data as unknown) as FoodItemDetail,
+    //       isLoading: false,
+    //     });
+    //   })
+    //   .catch((error) => console.log(error));
 
     const reviewsUrl =
       'http://' +
@@ -185,18 +208,26 @@ export default class ItemDetailScreen extends Component<
       <ScreenContainer>
         <ScrollView nestedScrollEnabled={false}>
           <View style={{ flexDirection: 'row' }}>
-            {isMarked ? (
-              <Image
-                source={require('../assets/bookmark_filled.png')}
-                style={styles.bookMarkImage}
-              ></Image>
-            ) : (
-              <Image
-                source={require('../assets/bookmark_unfilled.png')}
-                style={styles.bookMarkImage}
-              ></Image>
-            )}
             <Image source={{ uri: item.image_url }} style={styles.foodImage} />
+
+            <View style={styles.bookmarkContainer}>
+              <TouchableOpacity
+                onPress={() => this.changeMarkedItem()}
+                activeOpacity={1}
+              >
+                {isMarked ? (
+                  <Image
+                    source={require('../assets/bookmark_filled.png')}
+                    style={styles.bookMarkImage}
+                  ></Image>
+                ) : (
+                  <Image
+                    source={require('../assets/bookmark_unfilled.png')}
+                    style={styles.bookMarkImage}
+                  ></Image>
+                )}
+              </TouchableOpacity>
+            </View>
 
             {/* </TouchableHighlight> */}
           </View>
@@ -329,12 +360,14 @@ function findReviewOfUser(
 }
 
 const styles = StyleSheet.create({
+  bookmarkContainer: {
+    position: 'absolute',
+    right: 0,
+  },
   bookMarkImage: {
     width: 30,
     height: 30,
-    position: 'absolute',
     margin: 15,
-    right: 0,
   },
   touchable: {
     width: 30,

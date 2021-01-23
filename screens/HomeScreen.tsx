@@ -44,9 +44,11 @@ export default class HomeScreen extends Component<
   };
 
   componentDidMount() {
+    const { userId } = this.state;
+
     this.setState({ isLoading: true });
     const route =
-      'http://' + getIpAddress() + ':3000/markedItemsByUserId?userId=1';
+      'http://' + getIpAddress() + ':3000/markedItemsByUserId?userId=' + userId;
 
     axios
       .get(route)
