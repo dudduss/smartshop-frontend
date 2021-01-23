@@ -43,10 +43,11 @@ export default class HomeScreen extends Component<
     this.setState({ searchString });
   };
 
-  componentDidMount() {
+  getMarkedItems() {
     const { userId } = this.state;
 
     this.setState({ isLoading: true });
+
     const route =
       'http://' + getIpAddress() + ':3000/markedItemsByUserId?userId=' + userId;
 
@@ -63,6 +64,14 @@ export default class HomeScreen extends Component<
         });
       })
       .catch((error) => console.log(error));
+  }
+
+  componentDidMount() {
+    this.props.navigation.addListener('focus', () => {
+      this.getMarkedItems();
+    });
+
+    this.getMarkedItems();
   }
 
   render() {

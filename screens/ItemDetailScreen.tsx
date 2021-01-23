@@ -145,29 +145,8 @@ export default class ItemDetailScreen extends Component<
     }
   }
 
-  componentDidMount() {
+  getReviews() {
     const { route } = this.props;
-    this.setState({ isLoading: true });
-
-    this.props.navigation.addListener('focus', () => {
-      this.componentDidMount();
-    });
-
-    // const detailUrl =
-    //   'http://' +
-    //   getIpAddress() +
-    //   ':3000/items/search/detail?nix_item_id=' +
-    //   route.params.item.nix_item_id;
-
-    // axios
-    //   .get(detailUrl)
-    //   .then((response) => {
-    //     this.setState({
-    //       itemDetail: (response.data as unknown) as FoodItemDetail,
-    //       isLoading: false,
-    //     });
-    //   })
-    //   .catch((error) => console.log(error));
 
     const reviewsUrl =
       'http://' +
@@ -191,10 +170,40 @@ export default class ItemDetailScreen extends Component<
         });
       })
       .catch((error) => console.log(error));
+  }
+
+  componentDidMount() {
+    this.setState({ isLoading: true });
+
+    this.props.navigation.addListener('focus', () => {
+      this.componentDidMount();
+    });
+
+    // const detailUrl =
+    //   'http://' +
+    //   getIpAddress() +
+    //   ':3000/items/search/detail?nix_item_id=' +
+    //   route.params.item.nix_item_id;
+
+    // axios
+    //   .get(detailUrl)
+    //   .then((response) => {
+    //     this.setState({
+    //       itemDetail: (response.data as unknown) as FoodItemDetail,
+    //       isLoading: false,
+    //     });
+    //   })
+    //   .catch((error) => console.log(error));
+
+    this.getReviews();
 
     this.getMarkedItem();
 
     // We also want to make requests to our "health endpoint" when that is ready + get reviews endpoint
+  }
+
+  componentWillUnmount() {
+    this.forceUpdate();
   }
 
   render() {
@@ -202,7 +211,6 @@ export default class ItemDetailScreen extends Component<
     const { itemDetail, reviews, rating, numReviews, isMarked } = this.state;
     const item = route.params.item;
     const userId = route.params.userId;
-    // console.log('userId: ', userId);
 
     return (
       <ScreenContainer>
