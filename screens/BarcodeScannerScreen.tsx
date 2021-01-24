@@ -2,14 +2,32 @@ import React, { Component, PureComponent } from 'react';
 import { ScreenContainer } from 'react-native-screens';
 import { StyleSheet, Text, View } from 'react-native';
 import { Camera } from 'expo-camera';
+import { getIpAddress } from '../utils';
+import axios from 'axios';
+import {
+  FoodItem,
+  ItemDetailNavigationProp,
+  RootStackParamsList,
+} from '../types';
+import { RouteProp } from '@react-navigation/native';
 
 type BarcodeScannerScreenState = {
   didScan: boolean;
   hasPermission?: boolean;
 };
 
+type BarcodeScannerScreenRouteProp = RouteProp<
+  RootStackParamsList,
+  'BarcodeScanner'
+>;
+
+type BarcodeScannerScreenProps = {
+  route: BarcodeScannerScreenRouteProp;
+  navigation: ItemDetailNavigationProp;
+};
+
 export default class BarcodeScannerScreen extends PureComponent<
-  {},
+  BarcodeScannerScreenProps,
   BarcodeScannerScreenState
 > {
   constructor(props: any) {
@@ -22,14 +40,29 @@ export default class BarcodeScannerScreen extends PureComponent<
 
   handleBarCodeScanned = ({ type, data }) => {
     const { didScan } = this.state;
+    const { route, navigation } = this.props;
+    const userId = route.params.userId;
+
+    console.log('didscan: ', didScan);
 
     if (!didScan) {
-      alert('we got this data: ' + data + ' with this type ' + type);
-    }
+      this.setState({
+        didScan: true,
+      });
+      const getItemByUpcUrl =
+        'http://' + getIpAddress() + ':3000/items/searchByUpc/?upc=' + data;
 
-    this.setState({
-      didScan: true,
-    });
+      axios
+        .get(getItemByUpcUrl)
+        .then((response) => {
+          const item = (response.data as unknown) as FoodItem;
+
+          navigation.push('ItemDetail', { item, userId });
+
+          return;
+        })
+        .catch((error) => console.log(error));
+    }
   };
 
   async componentDidMount() {
@@ -39,6 +72,12 @@ export default class BarcodeScannerScreen extends PureComponent<
 
   render() {
     const { didScan, hasPermission } = this.state;
+
+    this.props.navigation.addListener('focus', () => {
+      this.setState({
+        didScan: false,
+      });
+    });
 
     if (hasPermission == null) {
       return (
@@ -66,7 +105,7 @@ export default class BarcodeScannerScreen extends PureComponent<
         </View>
       );
     } else {
-      return <Text> You're done mista!</Text>;
+      return <View></View>;
     }
   }
 }

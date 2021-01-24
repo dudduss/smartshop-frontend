@@ -175,10 +175,6 @@ export default class ItemDetailScreen extends Component<
   componentDidMount() {
     this.setState({ isLoading: true });
 
-    this.props.navigation.addListener('focus', () => {
-      this.componentDidMount();
-    });
-
     // const detailUrl =
     //   'http://' +
     //   getIpAddress() +
@@ -211,6 +207,10 @@ export default class ItemDetailScreen extends Component<
     const { itemDetail, reviews, rating, numReviews, isMarked } = this.state;
     const item = route.params.item;
     const userId = route.params.userId;
+
+    navigation.addListener('focus', () => {
+      this.getReviews();
+    });
 
     return (
       <ScreenContainer>

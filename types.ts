@@ -13,7 +13,7 @@ export type RootStackParamsList = {
   SearchResults: { searchString: string; userId: number };
   ItemDetail: { item: FoodItem; userId: number };
   WriteReview: { item: FoodItem; userId: number; review?: Review };
-  BarcodeScanner: undefined;
+  BarcodeScanner: { userId: number };
 };
 
 export type SearchResultsNavigationProp = StackNavigationProp<

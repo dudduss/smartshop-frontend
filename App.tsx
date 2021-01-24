@@ -42,7 +42,7 @@ class HomeStackScreen extends Component {
           options={({ navigation }) => ({
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => navigation.push('BarcodeScanner')}
+                onPress={() => navigation.push('BarcodeScanner', { userId: 5 })}
               >
                 <Image
                   style={styles.headerImage}
