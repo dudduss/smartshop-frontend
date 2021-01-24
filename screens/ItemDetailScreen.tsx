@@ -28,14 +28,10 @@ import {
   Collapse,
   CollapseHeader,
   CollapseBody,
-  AccordionList,
 } from 'accordion-collapse-react-native';
 import ReviewsList from '../components/ReviewsList';
 import ActionButton from '../components/ActionButton';
-import {
-  TouchableHighlight,
-  TouchableOpacity,
-} from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 // We need the List inside of ScrollView
 LogBox.ignoreLogs([
