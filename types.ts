@@ -4,6 +4,7 @@ export type HomeStackParamsList = {
   Home: undefined;
   SearchResults: { searchString: string; userId: number };
   ItemDetail: { item: FoodItem; userId: number };
+  BarcodeScanner: undefined;
   // WriteReview: { item: FoodItem; userId: number; review?: Review };
 };
 
@@ -12,6 +13,7 @@ export type RootStackParamsList = {
   SearchResults: { searchString: string; userId: number };
   ItemDetail: { item: FoodItem; userId: number };
   WriteReview: { item: FoodItem; userId: number; review?: Review };
+  BarcodeScanner: undefined;
 };
 
 export type SearchResultsNavigationProp = StackNavigationProp<
@@ -27,6 +29,11 @@ export type ItemDetailNavigationProp = StackNavigationProp<
 export type WriteReviewNavigationProp = StackNavigationProp<
   RootStackParamsList,
   'WriteReview'
+>;
+
+export type BarcodeScannerNavigationProp = StackNavigationProp<
+  RootStackParamsList,
+  'BarcodeScanner'
 >;
 
 export type FoodItem = {

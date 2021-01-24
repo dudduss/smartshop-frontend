@@ -5,11 +5,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import SearchResultsScreen from './screens/SearchResultsScreen';
+import BarcodeScannerScreen from './screens/BarcodeScannerScreen';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { HomeStackParamsList, RootStackParamsList } from './types';
 import ItemDetailScreen from './screens/ItemDetailScreen';
 import WriteReviewScreen from './screens/WriteReviewScreen';
-import { Button } from 'react-native';
+import { Button, Text, Image, StyleSheet } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const Stack = createStackNavigator();
 const Tabs = createBottomTabNavigator();
@@ -34,7 +36,29 @@ class HomeStackScreen extends Component {
           headerBackTitle: ' ',
         }}
       >
-        <HomeStack.Screen name='Home' component={HomeScreen}></HomeStack.Screen>
+        <HomeStack.Screen
+          name='Home'
+          component={HomeScreen}
+          options={({ navigation }) => ({
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => navigation.push('BarcodeScanner')}
+              >
+                <Image
+                  style={styles.headerImage}
+                  source={require('./assets/barcode_scan.png')}
+                ></Image>
+              </TouchableOpacity>
+            ),
+          })}
+        ></HomeStack.Screen>
+        <HomeStack.Screen
+          name='BarcodeScanner'
+          component={BarcodeScannerScreen}
+          options={() => ({
+            title: 'Scan an item',
+          })}
+        ></HomeStack.Screen>
         <HomeStack.Screen
           name='SearchResults'
           component={SearchResultsScreen}
@@ -139,3 +163,11 @@ export default class App extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  headerImage: {
+    margin: 10,
+    height: 32,
+    width: 32,
+  },
+});

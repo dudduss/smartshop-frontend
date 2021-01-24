@@ -10,6 +10,7 @@ import {
   HomeStackParamsList,
   SearchResultsNavigationProp,
   ItemDetailNavigationProp,
+  BarcodeScannerNavigationProp,
 } from '../types';
 import { getIpAddress, convertToMarkedFoodItem } from '../utils';
 
@@ -21,7 +22,10 @@ type HomeScreenState = {
 };
 
 type HomeScreenProps = {
-  navigation: SearchResultsNavigationProp | ItemDetailNavigationProp;
+  navigation:
+    | SearchResultsNavigationProp
+    | ItemDetailNavigationProp
+    | BarcodeScannerNavigationProp;
 };
 
 export default class HomeScreen extends Component<
