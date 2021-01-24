@@ -79,7 +79,7 @@ export default class HomeScreen extends Component<
     const { markedItems, searchString, userId } = this.state;
 
     navigation.addListener('focus', () => {
-      this.componentDidMount();
+      this.getMarkedItems();
     });
 
     return (
