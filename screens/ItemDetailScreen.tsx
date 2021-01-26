@@ -30,6 +30,7 @@ import {
   CollapseBody,
 } from 'accordion-collapse-react-native';
 import ReviewsList from '../components/ReviewsList';
+import ClaimsList from '../components/ClaimsList';
 import ActionButton from '../components/ActionButton';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -168,24 +169,30 @@ export default class ItemDetailScreen extends Component<
       .catch((error) => console.log(error));
   }
 
+  getDetail() {
+    const { route } = this.props;
+
+    const detailUrl =
+      'http://' +
+      getIpAddress() +
+      ':3000/items/search/detail?nix_item_id=' +
+      route.params.item.nix_item_id;
+
+    axios
+      .get(detailUrl)
+      .then((response) => {
+        this.setState({
+          itemDetail: (response.data as unknown) as FoodItemDetail,
+          isLoading: false,
+        });
+      })
+      .catch((error) => console.log(error));
+  }
+
   componentDidMount() {
     this.setState({ isLoading: true });
 
-    // const detailUrl =
-    //   'http://' +
-    //   getIpAddress() +
-    //   ':3000/items/search/detail?nix_item_id=' +
-    //   route.params.item.nix_item_id;
-
-    // axios
-    //   .get(detailUrl)
-    //   .then((response) => {
-    //     this.setState({
-    //       itemDetail: (response.data as unknown) as FoodItemDetail,
-    //       isLoading: false,
-    //     });
-    //   })
-    //   .catch((error) => console.log(error));
+    this.getDetail();
 
     this.getReviews();
 
@@ -232,8 +239,6 @@ export default class ItemDetailScreen extends Component<
                 )}
               </TouchableOpacity>
             </View>
-
-            {/* </TouchableHighlight> */}
           </View>
           <View style={styles.infoContainer}>
             <Text style={styles.foodNameText}>{item.food_name}</Text>
@@ -268,6 +273,9 @@ export default class ItemDetailScreen extends Component<
                 ></ActionButton>
               </View>
             </View>
+            {itemDetail &&
+              itemDetail.claims.length > 0 &&
+              createClaimsSection(itemDetail)}
           </View>
           <View style={styles.sectionSeparator} />
           {createNutritionSection(itemDetail)}
@@ -277,6 +285,14 @@ export default class ItemDetailScreen extends Component<
       </ScreenContainer>
     );
   }
+}
+
+function createClaimsSection(itemDetail: FoodItemDetail) {
+  return (
+    <View style={styles.claimsContainer}>
+      <ClaimsList claims={itemDetail.claims}></ClaimsList>
+    </View>
+  );
 }
 
 function createNutritionSection(itemDetail: FoodItemDetail) {
@@ -431,6 +447,10 @@ const styles = StyleSheet.create({
   buttonContainer: {
     // marginTop: 10,
     marginRight: 20,
+  },
+  claimsContainer: {
+    marginTop: 20,
+    height: 30,
   },
 });
 

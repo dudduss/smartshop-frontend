@@ -73,6 +73,8 @@ export type FoodItemDetail = {
     thumb: 'string';
   };
   nix_item_id: string;
+  nf_ingredient_statement: string;
+  claims: string[];
 };
 
 export type Review = {

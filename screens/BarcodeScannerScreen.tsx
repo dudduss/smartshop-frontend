@@ -43,8 +43,6 @@ export default class BarcodeScannerScreen extends PureComponent<
     const { route, navigation } = this.props;
     const userId = route.params.userId;
 
-    console.log('didscan: ', didScan);
-
     if (!didScan) {
       this.setState({
         didScan: true,

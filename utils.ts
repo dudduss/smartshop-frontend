@@ -1,4 +1,5 @@
 import { Review, MarkedFoodItem } from './types';
+import { relevantClaims } from './constants';
 
 export function getIpAddress() {
   return '192.168.0.32';
@@ -29,4 +30,18 @@ export function convertToMarkedFoodItem(data: any): MarkedFoodItem {
   };
 
   return markedFoodItem;
+}
+
+export function getRelevantClaims(itemClaims: string[]): string[] {
+  const itemRelevantClaims = [];
+  for (var claimArr of relevantClaims) {
+    for (var claim of claimArr) {
+      if (itemClaims.includes(claim)) {
+        itemRelevantClaims.push(claim);
+        break;
+      }
+    }
+  }
+
+  return itemRelevantClaims;
 }
